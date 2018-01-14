@@ -1,6 +1,9 @@
 import requests
 import json
+from Levenshtein import ratio
 from bs4 import BeautifulSoup as bs
+
+compareRatio = 0.75
 
 # Quote source page from rotten tomatoes
 url = "https://www.rottentomatoes.com/m/fight_club/quotes/"
@@ -22,13 +25,15 @@ except Exception:
 # Find all quotes in parsedPage and append to quoteList
 for quote in parsedPage.find_all('span', class_="quote_actor"):
     line = quote.next_element.next_element.next_element.next_element
-    if len(line) <= 500:
-        quoteList.append(line)
+    if len(line) <= 500 and len(line) > 5:
+        if all(ratio(line, x) < compareRatio for x in quoteList):
+            quoteList.append(line)
+        else:
+            pass
 
-# Sample of loading quotes.json into quoteList and then printing the quotes
-# This is only here for testing and will be removed later
 with open('quotes.json', 'w') as quoteFile:
     json.dump(quoteList, quoteFile)
 
+# This is only here for testing and will be removed later
 for quote in quoteList:
     print(str(quote) + "\n")
