@@ -21,9 +21,12 @@ except Exception:
 
 # Find all quotes in parsedPage and append to quoteList
 for entry in parsedPage.find_all('div', class_="sodatext"):
-    # Find the quote character name and assign to character variable
-    character = entry.find('span', class_="character").next_element
-
+    # Find the quote character name and assign to character variable. Quotes
+    # that have multiple characters and lines are skipped.
+    if len(entry.find_all('span', class_="character")) > 1:
+        continue
+    else:
+        character = entry.find('span', class_="character").next_element
     # Find the quote line and assign to line variable. Quotes on IMDb.com have
     # a number of differing formats that require detection and then correction
     # for extra characters and/or line breaks.
