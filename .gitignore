@@ -1,1 +1,6 @@
+createJacksApp.py
 quotes.json
+
+*.secret
+
+__pycache__
