@@ -45,7 +45,7 @@ for entry in parsedPage.find_all('div', class_="sodatext"):
         line = str(character.previous_element)
     # Join the character and line and assign to quote variable
     quote = str(character) + str(line)
-    # Mastadon toot posts are limited to 500 characters or less. Check if quote
+    # Mastodon toot posts are limited to 500 characters or less. Check if quote
     # length is 500 characters or less and append to quoteList if so. Quotes
     # larger than 500 characters will be passed and not added to quoteList.
     if len(quote) <= 500 and len(line) > 5:
