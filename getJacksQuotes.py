@@ -59,8 +59,8 @@ with open('quotes.json', 'w') as quoteFile:
 
 
 # Can be used for testing to print quote lines to terminal output
-for quote in quoteList[0:]:
-    print(str(quote) + "\n")
+# for quote in quoteList[0:]:
+#    print(str(quote) + "\n")
 
 
 # Leftover code from Rottentomatoes parsing that attempted to deal with
