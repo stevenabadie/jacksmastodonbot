@@ -1,12 +1,14 @@
 import json
 from mastodon import Mastodon
-from createJacksApp import botName, mastodonServerUrl
+
+with open('botConfig.json', 'r') as botConfigFile:
+        botConfig = json.load(botConfigFile)
 
 # Create Mastodon API instance
 mastodon = Mastodon(
-    client_id = botName + '_clientcred.secret',
-    access_token = botName + '_usercred.secret',
-    api_base_url = mastodonServerUrl,
+    client_id = botConfig.get('botName') + '_clientcred.secret',
+    access_token = botConfig.get('botName') + '_usercred.secret',
+    api_base_url = botConfig.get('mastodonServerUrl'),
     request_timeout = 20
 )
 
