@@ -1,4 +1,5 @@
 createJacksApp.py
+nextQuote.json
 quotes.json
 
 *.secret
