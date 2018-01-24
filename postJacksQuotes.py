@@ -6,10 +6,10 @@ with open('botConfig.json', 'r') as botConfigFile:
 
 # Create Mastodon API instance
 mastodon = Mastodon(
-    client_id = botConfig.get('botName') + '_clientcred.secret',
-    access_token = botConfig.get('botName') + '_usercred.secret',
-    api_base_url = botConfig.get('mastodonServerUrl'),
-    request_timeout = 20
+    client_id=botConfig.get('botName') + '_clientcred.secret',
+    access_token=botConfig.get('botName') + '_usercred.secret',
+    api_base_url=botConfig.get('mastodonServerUrl'),
+    request_timeout=20
 )
 
 # Create nextQuote and try to load nextQuote.json into it. If nextQuote.json
