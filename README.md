@@ -9,10 +9,9 @@ Jack's Mastodon bot uses a few great Free and Open Soure Python packages.
 
 ## Basic Setup
 1. Clone the repo and change into the project directory
-```
-git clone https://gitea.anothernewthing.com/steven/jacks-mastodon-bot.git
-cd jacks-mastodon-bot
-```
+    git clone https://gitea.anothernewthing.com/steven/jacks-mastodon-bot.git
+    cd jacks-mastodon-bot
+
 2. Install required packages
 `pip install requirements.txt`
 3. Edit getJacksQuotes.py and change the url field to the IMDb quote page you want to pull quotes from. This bot was built from the [Fight Club](http://www.imdb.com/title/tt0137523/quotes) quotes page.
