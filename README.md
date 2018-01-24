@@ -9,6 +9,7 @@ Jack's Mastodon bot uses a few great Free and Open Soure Python packages.
 
 ## Basic Setup
 1. Clone the repo and change into the project directory
+
     git clone https://gitea.anothernewthing.com/steven/jacks-mastodon-bot.git
     cd jacks-mastodon-bot
 
