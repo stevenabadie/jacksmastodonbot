@@ -22,13 +22,10 @@ def createJacksApp():
         with open('botConfig.json', 'r') as botConfigFile:
             botConfig = json.load(botConfigFile)
     except Exception:
-        quoteUrl = input('Enter the URL for the IMDb quote page you want to \
-        use to generate quote posts from: ')
+        quoteUrl = input('Enter the URL for the IMDb quote page you want to use to generate quote posts from: ')
         botName = input('Enter a name for your Mastodon bot: ')
-        mastodonServerUrl = input('Enter the Mastodon server url \
-        (https://botsin.space): ')
-        userEmail = input('Enter the email associated with your Mastodon \
-        account: ')
+        mastodonServerUrl = input('Enter the Mastodon server url (https://botsin.space): ')
+        userEmail = input('Enter the email associated with your Mastodon account: ')
         userPass = input('Enter the pass word for you Mastodon account: ')
 
         botConfig.update(
@@ -40,8 +37,7 @@ def createJacksApp():
         )
         with open('botConfig.json', 'w') as botConfigFile:
             json.dump(botConfig, botConfigFile)
-        print('Your bot info is now saved in botConfig.json. Time to create \
-        the Mastodon app')
+        print('Your bot info is now saved in botConfig.json. Time to create the Mastodon app')
 
     # Geerate the client id and client secret tokens and saves them to a file
     Mastodon.create_app(
@@ -63,8 +59,7 @@ def createJacksApp():
         scopes=['write'],  # This bot only writes
         to_file=botConfig.get('botName') + '_usercred.secret'
     )
-    print('App connected to your account and access token received and saved \
-    to file.')
+    print('App connected to your account and access token received and saved to file.')
 
 
 def getJacksQuotes():
@@ -129,8 +124,8 @@ def getJacksQuotes():
     with open('quotes.json', 'w') as quoteFile:
         json.dump(quoteList, quoteFile)
 
-    print('Quotes filtered, saved to quotes.json and ready for posting! \n',
-          'Now run postJacksQuotes.py or set up a cron for scheduled toots.')
+    print('Quotes filtered, saved to quotes.json and ready for posting!\n' +
+         'Now run postJacksQuotes.py or set up a cron for scheduled toots.')
 
 
 createJacksApp()
