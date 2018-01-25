@@ -25,15 +25,15 @@ Jack's Mastodon bot uses a few great Free and Open Soure Python packages.
     * Python 3
     * Mastodon.py
     * Beautiful Soup 4
-    * Requests
-
-3. Create an account on a Mastodon server.
+    * Requests  
+      
+3. Create an account on a Mastodon server. https://botsin.space is a good server for testing and running bots.
 
 4. Run jacksBotSetup.py. This will ask you to enter a number of items:
     * The URL for an IMDb quotes page. This bot was built from the [Fight Club](http://www.imdb.com/title/tt0137523/quotes) quotes page for example
     * A name for you bot.
     * The URL for the Mastodon server you created your account on. http://botsin.space is a server for testing and running Mastodon bots.
     * The email you used for the Mastodon account you created.
-    * The password for the Mastodon account you created.
-
+    * The password for the Mastodon account you created.  
+  
 5. Run postJacksQuotes.py. Everytime this script is run a new quote will be posted to your Mastodon account. You can schedule the script using cron or another scheduler.
