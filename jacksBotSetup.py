@@ -1,4 +1,5 @@
 import json
+import os
 import requests
 from bs4 import BeautifulSoup as bs
 from mastodon import Mastodon
@@ -15,11 +16,12 @@ from mastodon import Mastodon
 # The script then generates the client id, client secret, and client access
 # tokens. This will generate two files to store the tokens.
 
+scriptLocation = os.path.dirname(os.path.realpath(__file__))
 
 def createJacksApp():
     botConfig = {}
     try:
-        with open('botConfig.json', 'r') as botConfigFile:
+        with open(scriptLocation + '/botConfig.json', 'r') as botConfigFile:
             botConfig = json.load(botConfigFile)
     except Exception:
         quoteUrl = input('Enter the URL for the IMDb quote page you want to use to generate quote posts from: ')
@@ -35,7 +37,7 @@ def createJacksApp():
             userEmail=userEmail,
             userPass=userPass
         )
-        with open('botConfig.json', 'w') as botConfigFile:
+        with open(scriptLocation + '/botConfig.json', 'w') as botConfigFile:
             json.dump(botConfig, botConfigFile)
         print('Your bot info is now saved in botConfig.json. Time to create the Mastodon app')
 
@@ -44,27 +46,27 @@ def createJacksApp():
          botConfig.get('botName'),
          api_base_url=botConfig.get('mastodonServerUrl'),
          scopes=['write'],  # This bot only writes
-         to_file=botConfig.get('botName') + '_clientcred.secret'
+         to_file=scriptLocation + '/' + botConfig.get('botName') + '_clientcred.secret'
     )
     print('Client ID and Client secret received and saved to file')
 
     # Connect the app to your account and save generated access token to a file
     mastodon = Mastodon(
-        client_id=botConfig.get('botName') + '_clientcred.secret',
+        client_id=scriptLocation + '/' + botConfig.get('botName') + '_clientcred.secret',
         api_base_url=botConfig.get('mastodonServerUrl')
     )
     mastodon.log_in(
         botConfig.get('userEmail'),
         botConfig.get('userPass'),
         scopes=['write'],  # This bot only writes
-        to_file=botConfig.get('botName') + '_usercred.secret'
+        to_file=scriptLocation + '/' + botConfig.get('botName') + '_usercred.secret'
     )
     print('App connected to your account and access token received and saved to file.')
 
 
 def getJacksQuotes():
     try:
-        with open('botConfig.json', 'r') as botConfigFile:
+        with open(scriptLocation + '/botConfig.json', 'r') as botConfigFile:
             botConfig = json.load(botConfigFile)
     except Exception:
         raise NameError('You are missing the botConfig.json file')
@@ -77,10 +79,10 @@ def getJacksQuotes():
     # quotes.json is created if it does not already exist
     quoteList = []
     try:
-        with open('quotes.json', 'r') as quoteFile:
+        with open(scriptLocation + '/quotes.json', 'r') as quoteFile:
             quoteList = json.load(quoteFile)
     except Exception:
-        with open('quotes.json', 'w') as quoteFile:
+        with open(scriptLocation + '/quotes.json', 'w') as quoteFile:
             json.dump(quoteList, quoteFile)
     print('Page source pulled from url and ready for parsing.')
 
@@ -121,7 +123,7 @@ def getJacksQuotes():
             pass
 
     # Dump quoteFile list into quotes.json file
-    with open('quotes.json', 'w') as quoteFile:
+    with open(scriptLocation + '/quotes.json', 'w') as quoteFile:
         json.dump(quoteList, quoteFile)
 
     print('Quotes filtered, saved to quotes.json and ready for posting!\n' +

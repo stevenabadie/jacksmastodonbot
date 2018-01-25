@@ -1,13 +1,16 @@
 import json
+import os
 from mastodon import Mastodon
 
-with open('botConfig.json', 'r') as botConfigFile:
+scriptLocation = os.path.dirname(os.path.realpath(__file__))
+
+with open(scriptLocation + '/botConfig.json', 'r') as botConfigFile:
         botConfig = json.load(botConfigFile)
 
 # Create Mastodon API instance
 mastodon = Mastodon(
-    client_id=botConfig.get('botName') + '_clientcred.secret',
-    access_token=botConfig.get('botName') + '_usercred.secret',
+    client_id=scriptLocation + '/' + botConfig.get('botName') + '_clientcred.secret',
+    access_token=scriptLocation + '/' + botConfig.get('botName') + '_usercred.secret',
     api_base_url=botConfig.get('mastodonServerUrl'),
     request_timeout=20
 )
@@ -17,15 +20,15 @@ mastodon = Mastodon(
 # to track which quote in the list is next to post.
 nextQuote = None
 try:
-    with open('nextQuote.json', 'r') as nextQuoteFile:
+    with open(scriptLocation + '/nextQuote.json', 'r') as nextQuoteFile:
         nextQuote = int(json.load(nextQuoteFile))
 except Exception:
-    with open('nextQuote.json', 'w') as nextQuoteFile:
+    with open(scriptLocation + '/nextQuote.json', 'w') as nextQuoteFile:
         json.dump(nextQuote, nextQuoteFile)
     nextQuote = 0
 
 # Load quotes.json into quoteList
-with open('quotes.json', 'r') as quoteFile:
+with open(scriptLocation + '/quotes.json', 'r') as quoteFile:
     quoteList = json.load(quoteFile)
 
 # Post quote if there are unposted quotes. Otherwise, raise an exception.
@@ -37,5 +40,5 @@ else:
 # Increase nextQuote by one and dump to nextQuote.json. The next time the
 # script is run the next quote in the list will be used.
 nextQuote += 1
-with open('nextQuote.json', 'w') as nextQuoteFile:
+with open(scriptLocation + '/nextQuote.json', 'w') as nextQuoteFile:
     json.dump(nextQuote, nextQuoteFile)
