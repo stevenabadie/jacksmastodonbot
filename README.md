@@ -8,22 +8,29 @@ Jack's Mastodon bot uses a few great Free and Open Soure Python packages.
 * [Mastodon.py](https://github.com/halcy/Mastodon.py)
 
 ## Setup
-Clone the repo and change into the project directory
+1 Clone the repo and change into the project directory
 
 ```
 git clone https://gitea.anothernewthing.com/steven/jacks-mastodon-bot.git
 cd jacks-mastodon-bot
 ```
 
-Install required packages
+2 Install required packages. You can use the includes pipy requirements.txt to install all of the required packages. You will need Python 3.
 `pip install requirements.txt`
 
-Edit getJacksQuotes.py and change the url field to the IMDb quote page you want to pull quotes from. This bot was built from the [Fight Club](http://www.imdb.com/title/tt0137523/quotes) quotes page.
+Otherwise, you need the following requirements:
+* Python 3
+* Mastodon.py
+* Beautiful Soup 4
+* Requests
 
-Run getJacksQuotes.py. It should create a quotes.json file full of quotes separated by a blank line.
+3 Create an account on a Mastodon server.
 
-Make an account on a Mastodon server. [http://botsin.space](http://botsin.space) is a good server for testing and running Mastodon bots.
+4 Run jacksBotSetup.py. This will ask you to enter a number of items:
+* The URL for an IMDb quotes page. This bot was built from the [Fight Club](http://www.imdb.com/title/tt0137523/quotes) quotes page for example
+* A name for you bot.
+* The URL for the Mastodon server you created your account on. http://botsin.space is a server for testing and running Mastodon bots.
+* The email you used for the Mastodon account you created.
+* The password for the Mastodon account you created.
 
-Run createJacksApp.py. You will be prompted to fill in your bot name, the Mastodon server you create your account on, the email you used to create your Mastodon account, and your Mastodon account password. Once the script is complete you should now see three new files: yourbotname_clientcred.secret, yourbotname_usercred.secret, and botConfig.json.
-
-Run postJacksQuotes.py. Everytime this script is run a new quote will be posted to your Mastodon account.
+5 Run postJacksQuotes.py. Everytime this script is run a new quote will be posted to your Mastodon account. You can schedule the script using cron or another scheduler.
