@@ -64,6 +64,27 @@ def createJacksApp():
     print('App connected to your account and access token received and saved to file.')
 
 
+def lineCorrection(quoteEntry, character):
+    # Find the quote line and assign to line variable. Quotes on IMDb.com
+    # have a number of differing formats that require detection and then
+    # correction for extra characters and/or line breaks.
+    #
+    # For quotes with time stamps like, [1:04:02], the closing square
+    # bracket and line break have to be removed.
+    if "]" in str(quoteEntry):
+        lineBad = \
+            (character.next_element.next_element.next_element.next_element)
+        line = str(lineBad).replace("]\n", ": ")
+    # Some quotes contain a line break. Detect if there is a line break in
+    # a quote line and remove if found.
+    elif "\n" in character.next_element.string:
+        lineBad = character.next_element.string
+        line = str(lineBad).replace("\n", " ")
+    else:
+        line = str(character.previous_element)
+    return(line)
+
+
 def getJacksQuotes():
     try:
         with open(scriptLocation + '/botConfig.json', 'r') as botConfigFile:
@@ -88,31 +109,30 @@ def getJacksQuotes():
 
     # Find all quotes in parsedPage and append to quoteList
     for entry in parsedPage.find_all('div', class_="sodatext"):
-        # Find the quote character name and assign to character variable.
-        # Quotes that have multiple characters and lines are skipped.
+        # Check if there are more than one character line in a quote. If so,
+        # iterate over the quote lines and append to quote variable.
         if len(entry.find_all('span', class_="character")) > 1:
-            continue
+            quote = ""
+            for i, characterLine in enumerate(entry.find_all('span', class_="character")):
+                character = characterLine.next_element
+                if i == 0:
+                    if "]" in str(character.next_element.next_element.next_element.next_element):
+                        lineBad = \
+                            (character.next_element.next_element.next_element.next_element)
+                        line = str(lineBad).replace("]\n", ": ")
+                    else:
+                        line = lineCorrection(characterLine, character)
+                else:
+                    line = lineCorrection(characterLine, character)
+                quoteLine = str(character) + str(line)
+                quote += str(quoteLine) + "\n"
         else:
+            # Find the quote character name and assign to character variable.
+            # Quotes that have multiple characters and lines are skipped.
             character = entry.find('span', class_="character").next_element
-        # Find the quote line and assign to line variable. Quotes on IMDb.com
-        # have a number of differing formats that require detection and then
-        # correction for extra characters and/or line breaks.
-        #
-        # For quotes with time stamps like, [1:04:02], the closing square
-        # bracket and line break have to be removed.
-        if "]" in str(entry):
-            lineBad = \
-                (character.next_element.next_element.next_element.next_element)
-            line = str(lineBad).replace("]\n", ": ")
-        # Some quotes contain a line break. Detect if there is a line break in
-        # a quote line and remove if found.
-        elif "\n" in character.next_element.string:
-            lineBad = character.next_element.string
-            line = str(lineBad).replace("\n", " ")
-        else:
-            line = str(character.previous_element)
-        # Join the character and line and assign to quote variable
-        quote = str(character) + str(line)
+            line = lineCorrection(entry, character)
+            # Join the character and line and assign to quote variable
+            quote = str(character) + str(line)
         # Mastodon toot posts are limited to 500 characters or less. Check if
         # quote length is 500 characters or less and append to quoteList if so.
         # Quotes larger than 500 characters will be passed and not added to
