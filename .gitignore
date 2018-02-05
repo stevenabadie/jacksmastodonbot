@@ -5,3 +5,8 @@ quotes.json
 *.secret
 
 __pycache__
+*.pyc
+
+/dist/
+
+/*.egg-info
