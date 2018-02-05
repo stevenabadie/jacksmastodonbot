@@ -71,10 +71,13 @@ def lineCorrection(quoteEntry, character):
     #
     # For quotes with time stamps like, [1:04:02], the closing square
     # bracket and line break have to be removed.
-    if "]" in str(quoteEntry):
+    if "]" in str(character.next_element.next_element.next_element.next_element):
         lineBad = \
             (character.next_element.next_element.next_element.next_element)
         line = str(lineBad).replace("]\n", ": ")
+    # Sometimes there will be a random bullet point in a quote.
+    elif "<li>" in str(character.next_element.next_element.next_element):
+        line = ": " + str(character.next_element.next_element.next_element.string)
     # Some quotes contain a line break. Detect if there is a line break in
     # a quote line and remove if found.
     elif "\n" in character.next_element.string:
@@ -113,25 +116,17 @@ def getJacksQuotes():
         # iterate over the quote lines and append to quote variable.
         if len(entry.find_all('span', class_="character")) > 1:
             quote = ""
-            for i, characterLine in enumerate(entry.find_all('span', class_="character")):
+            for characterLine in entry.find_all('span', class_="character"):
                 character = characterLine.next_element
-                if i == 0:
-                    if "]" in str(character.next_element.next_element.next_element.next_element):
-                        lineBad = \
-                            (character.next_element.next_element.next_element.next_element)
-                        line = str(lineBad).replace("]\n", ": ")
-                    else:
-                        line = lineCorrection(characterLine, character)
-                else:
-                    line = lineCorrection(characterLine, character)
+                line = lineCorrection(characterLine, character)
                 quoteLine = str(character) + str(line)
                 quote += str(quoteLine) + "\n"
+            quote = quote[0:quote.rfind("\n")]
         else:
             # Find the quote character name and assign to character variable.
             # Quotes that have multiple characters and lines are skipped.
             character = entry.find('span', class_="character").next_element
             line = lineCorrection(entry, character)
-            # Join the character and line and assign to quote variable
             quote = str(character) + str(line)
         # Mastodon toot posts are limited to 500 characters or less. Check if
         # quote length is 500 characters or less and append to quoteList if so.
