@@ -44,6 +44,7 @@ class JacksBotSetup:
             )
             with open(self.scriptLocation + '/botConfig.json', 'w') as botConfigFile:
                 json.dump(botConfig, botConfigFile)
+            os.chmod(self.scriptLocation + '/botConfig.json', 0o660)
             print('Your bot info is now saved in botConfig.json. Time to create the Mastodon app')
 
         # Generate the client id and client secret tokens and saves them to a file
@@ -53,6 +54,7 @@ class JacksBotSetup:
              scopes=['write'],  # This bot only writes
              to_file=self.scriptLocation + '/' + botConfig.get('botName') + '_clientcred.secret'
         )
+        os.chmod(self.scriptLocation + '/' + botConfig.get('botName') + '_clientcred.secret', 0o660)
         print('Client ID and Client secret received and saved to file')
 
         # Connect the app to your account and save generated access token to a file
@@ -66,6 +68,7 @@ class JacksBotSetup:
             scopes=['write'],  # This bot only writes
             to_file=self.scriptLocation + '/' + botConfig.get('botName') + '_usercred.secret'
         )
+        os.chmod(self.scriptLocation + '/' + botConfig.get('botName') + '_usercred.secret', 0o660)
         print('App connected to your account and access token received and saved to file.')
 
     def lineCorrection(self, quoteEntry, character):
