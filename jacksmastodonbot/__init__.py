@@ -1,2 +1,2 @@
-from .jacksBotSetup import createJacksApp, lineCorrection, getJacksQuotes
-from .postJacksQuotes import postJacksQuotes
+from .jacksBotSetup import JacksBotSetup
+from .postJacksQuotes import PostJacksQuotes
