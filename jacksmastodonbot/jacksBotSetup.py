@@ -151,4 +151,4 @@ class JacksBotSetup:
         with open(self.scriptLocation + '/quotes.json', 'w') as quoteFile:
             json.dump(quoteList, quoteFile)
 
-        print('Quotes filtered, saved to quotes.json and ready for posting!\n' + 'Now run postJacksQuotes.py or set up a cron for scheduled toots.')
+        print('Quotes filtered, saved to quotes.json and ready for posting!')
