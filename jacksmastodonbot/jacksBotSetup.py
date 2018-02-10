@@ -8,20 +8,22 @@ from mastodon import Mastodon
 # To connect your bot through the Mastodon API you need to first create an
 # account on the Mastodon server of your choice. https://botsin.space is a
 # great Mastodon server for testing bots.
-#
-# Once you have your account created, run this script. You will be prompted to
-# enter your bot name, the Mastodon server url, the email you used with your
-# Mastodon account, and your Mastadon account password. This information will
-# then be stored in botConfig.json
-#
-# The script then generates the client id, client secret, and client access
-# tokens. This will generate two files to store the tokens.
+
 
 class JacksBotSetup:
+    """Setup the Mastodon bot
+
+    The setup will request information to generate keys for access to your Mastodon account, scrape a chosen IMDb movie quote page and parse the quotes for posting.
+    """
+
     def __init__(self):
         self.scriptLocation = os.path.dirname(inspect.getfile(self.__class__))
 
     def createJacksApp(self):
+        """Request bot information and generate botConfig.json and access tokens
+
+        Request bot setup information including IMDb quote page url, bot name, Mastodon server for your account, Mastodon account email, and Mastodon account password. This info is stored in botConfig.json. The botConfig information is then used to register the bot with the given Mastodon account and generate access tokens.
+        """
         botConfig = {}
         try:
             with open(self.scriptLocation + '/botConfig.json', 'r') as botConfigFile:
@@ -44,7 +46,7 @@ class JacksBotSetup:
                 json.dump(botConfig, botConfigFile)
             print('Your bot info is now saved in botConfig.json. Time to create the Mastodon app')
 
-        # Geerate the client id and client secret tokens and saves them to a file
+        # Generate the client id and client secret tokens and saves them to a file
         Mastodon.create_app(
              botConfig.get('botName'),
              api_base_url=botConfig.get('mastodonServerUrl'),
@@ -66,14 +68,13 @@ class JacksBotSetup:
         )
         print('App connected to your account and access token received and saved to file.')
 
-
     def lineCorrection(self, quoteEntry, character):
-        # Find the quote line and assign to line variable. Quotes on IMDb.com
-        # have a number of differing formats that require detection and then
-        # correction for extra characters and/or line breaks.
-        #
-        # For quotes with time stamps like, [1:04:02], the closing square
-        # bracket and line break have to be removed.
+        """Find the quote line, correct detected formatting issues, and assign to line variable.
+
+        Quotes on IMDb.com have a number of differing formats that require detection and then correction for extra characters and/or line breaks.
+        For quotes with time stamps like, [1:04:02], the closing square bracket and line break have to be removed.
+        """
+
         if "]" in str(character.next_element.next_element.next_element.next_element):
             lineBad = \
                 (character.next_element.next_element.next_element.next_element)
@@ -90,8 +91,11 @@ class JacksBotSetup:
             line = str(character.previous_element)
         return(line)
 
-
     def getJacksQuotes(self):
+        """Scrape quote data from given IMDb quote url and parse for posting.
+
+        Using requests, the HTML is scraped from the IMDb quote url in botConfig and assigned to page. beautifulsoup4 is then used to parse the html to recognize postable quotes and append quotes to quoteList. Once processing is complete quoteList is saved to quotes.json.
+        """
         try:
             with open(self.scriptLocation + '/botConfig.json', 'r') as botConfigFile:
                 botConfig = json.load(botConfigFile)
@@ -144,5 +148,4 @@ class JacksBotSetup:
         with open(self.scriptLocation + '/quotes.json', 'w') as quoteFile:
             json.dump(quoteList, quoteFile)
 
-        print('Quotes filtered, saved to quotes.json and ready for posting!\n' +
-             'Now run postJacksQuotes.py or set up a cron for scheduled toots.')
+        print('Quotes filtered, saved to quotes.json and ready for posting!\n' + 'Now run postJacksQuotes.py or set up a cron for scheduled toots.')

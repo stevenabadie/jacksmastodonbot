@@ -5,6 +5,11 @@ from mastodon import Mastodon
 
 
 class PostJacksQuotes:
+    """Post quotes from parsed quotes saved in quotes.json
+
+    With bot setup and quote collection completed with JacksBotSetup, quotes can now be posted directly to the configured Mastodon account. The next quote to post is tracked by nextQuote.json.
+    """
+
     def __init__(self):
         self.scriptLocation = os.path.dirname(inspect.getfile(self.__class__))
 
@@ -35,8 +40,9 @@ class PostJacksQuotes:
         with open(self.scriptLocation + '/quotes.json', 'r') as quoteFile:
             self.quoteList = json.load(quoteFile)
 
-
     def postQuote(self):
+        """Post next quote to configured Mastodon account."""
+
         # Post quote if there are unposted quotes. Otherwise, raise an exception.
         if self.nextQuote <= len(self.quoteList):
             self.mastodon.toot(self.quoteList[self.nextQuote])
