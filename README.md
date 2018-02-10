@@ -2,7 +2,7 @@
 
 A simple Mastodon bot that grabs movie quotes from IMDb quote pages and posts them to Mastodon. It is currently only setup for and tested on GNU/Linux.
 
-Jack's Mastodon bot uses a few great Free and Open Soure Python packages.
+Jack's Mastodon bot uses a few awesome Free and Open Soure Python packages.
 * [Requests](http://docs.python-requests.org/en/master/) -- Used to grab HTML data from IMDb quote pages.
 * [Beautiful Soup 4](https://www.crummy.com/software/BeautifulSoup/) -- Used to parse the raw HTML and prepare quotes for posting.
 * [Mastodon.py](https://github.com/halcy/Mastodon.py) -- Used to register app with Mastodon and post quotes.
@@ -33,7 +33,7 @@ Jack's Mastodon bot uses a few great Free and Open Soure Python packages.
     `setup-jacks-bot`
 
     After running `setup-jacks-bot` you will be prompted with requests for information to configure your bot.
-      * The URL for an IMDb quotes page.
+      * The URL for your chosen IMDb quotes page.
       * A name for you bot.
       * The URL for the Mastodon server you created your account on.
       * The email you used for the Mastodon account you created.
@@ -43,7 +43,7 @@ Jack's Mastodon bot uses a few great Free and Open Soure Python packages.
 
     `post-quote`
 
-    You can use cron or anoher scheduler to schedule post-quote. [Here is a quick guide on setting up a cron job](https://www.digitalocean.com/community/tutorials/how-to-use-cron-to-automate-tasks-on-a-vps). An example cron setting for posting a new quote every hour would be:
+    You can use cron or another scheduler to schedule post-quote. [Here is a quick guide on setting up a cron job](https://www.digitalocean.com/community/tutorials/how-to-use-cron-to-automate-tasks-on-a-vps). An example cron setting for posting a new quote every hour would be:
 
     `0 * * * * /home/YOURUSER/jacksmastodonbot/botenv/bin/post-quote`
 
